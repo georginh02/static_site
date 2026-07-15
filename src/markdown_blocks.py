@@ -93,6 +93,7 @@ def code_to_html_node(text:str) -> ParentNode:
     lnode = text_node_to_html_node(tnode)
     return ParentNode("pre", [lnode])
 
+
 # based on the type type of text (eg texttype) all the logic is done through helpers and this function returns a complete parentnode with its corresponding type
 def block_to_children(text) -> ParentNode:
     block_type = block_to_block_type(text)
