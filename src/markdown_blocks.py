@@ -60,6 +60,26 @@ def textnodes_to_leafnodes(textnodes: list[TextNode]) -> list[LeafNode]:
         list_of_hnodes.append(textnode)
     return list_of_hnodes
 
+# converts text into paragraph nodes
+def paragraph_to_html_node(text:str) -> ParentNode:
+    replaced_text_with_spaces = text.replace("\n", " ")
+    tnodes = inline_to_textnodes(replaced_text_with_spaces)
+    lnodes = textnodes_to_leafnodes(tnodes)
+    return ParentNode("p", lnodes)
+
+# converts text into quote nodes
+def quote_to_html_node(text:str) -> ParentNode:
+    split_text_by_newline = text.split("\n")
+    list_of_pnodes = []
+    
+    for text in split_text_by_newline:
+        text = text[2:]
+        if text != "":
+            lnode = paragraph_to_html_node(text)
+            list_of_pnodes.append(lnode)
+        continue
+    return ParentNode("blockquote", list_of_pnodes)
+    
 # converts an unordered list to a parentnode
 def unordered_list_to_html_node(text:str) -> ParentNode:
     split_text_by_newlines = text.split("\n")
@@ -99,10 +119,7 @@ def block_to_children(text) -> ParentNode:
     block_type = block_to_block_type(text)
     match block_type:
         case BlockType.PARAGRAPH:
-            replaced_text_with_spaces = text.replace("\n", " ")
-            tnodes = inline_to_textnodes(replaced_text_with_spaces)
-            lnodes = textnodes_to_leafnodes(tnodes)
-            return ParentNode("p", lnodes)
+            return paragraph_to_html_node(text)
 
         case BlockType.HEADING:
             count = text.count("#")
@@ -115,10 +132,7 @@ def block_to_children(text) -> ParentNode:
             return code_to_html_node(text)
 
         case BlockType.QUOTE:
-            stripped_text = text.strip("> ")
-            tnodes = inline_to_textnodes(stripped_text)
-            lnodes = textnodes_to_leafnodes(tnodes)
-            return ParentNode("blockquote", lnodes)
+            return quote_to_html_node(text)
 
         case BlockType.UNORDERED_LIST:
             return unordered_list_to_html_node(text)
