@@ -35,9 +35,11 @@ class LeafNode(HTMLNode):
     def to_html(self) -> str:
         if self.value is None:
             raise ValueError("invalid HTML: no value")
-        if self.tag is None:
-            return self.value
-        return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
+        if self.tag:
+            if self.tag == "img":
+                return f"<{self.tag}{self.props_to_html()}>{self.value}"
+            return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
+        return self.value
 
     def __repr__(self) -> str:
         return f"LeafNode({self.tag}, {self.value}, {self.props})"

@@ -5,10 +5,10 @@ dest_dir = "./public"
 
 from_path = "./content/index.md"
 template_path = "template.html"
-dest_path = "./public"
+dest_path = "./public/index.html"
 
 
 def main():
-    # static_to_public(source_dir, dest_dir)
+    static_to_public(source_dir, dest_dir)
     print(generate_page(from_path, template_path, dest_path))
 main()

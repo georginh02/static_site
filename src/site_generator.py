@@ -1,6 +1,7 @@
 import os, shutil
 from markdown_blocks import markdown_to_blocks , markdown_to_html_node
 
+
 def static_to_public(source_dir: str, dest_dir: str) -> list[str]:
     visited = []
     print(source_dir, dest_dir)
@@ -39,7 +40,6 @@ def extract_title(markdown) -> str:
         
     
 def generate_page(from_path:str, template_path:str, dest_path:str):
-    print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     markdown_file = ""
     template_file = ""
     
@@ -51,8 +51,18 @@ def generate_page(from_path:str, template_path:str, dest_path:str):
         
     page_content = markdown_to_html_node(markdown_file).to_html()
     page_tite = extract_title(markdown_file)   
-    
     template_file = template_file.replace("{{ Title }}", page_tite)
     template_file = template_file.replace("{{ Content }}", page_content)
-    print(template_file)
+    parent_directory = os.path.dirname(dest_path)
+    
+    if not os.path.exists(dest_path):
+        if os.path.exists(parent_directory):
+            with open(dest_path, "x") as file:
+                file.write(template_file)
+        else:
+            os.makedirs(parent_directory)
+            with open(dest_path, "x") as file:
+                file.write(template_file)
+    return f"Generating page from {from_path} to {dest_path} using {template_path}"
+            
     
