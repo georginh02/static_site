@@ -79,7 +79,6 @@ def quote_to_html_node(text:str) -> ParentNode:
             lnode = textnodes_to_leafnodes(tnode)
             list_of_pnodes.extend(lnode)
         continue
-    print(list_of_pnodes)
     return ParentNode("blockquote", list_of_pnodes)
     
 # converts an unordered list to a parentnode
