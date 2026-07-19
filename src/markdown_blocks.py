@@ -75,9 +75,11 @@ def quote_to_html_node(text:str) -> ParentNode:
     for text in split_text_by_newline:
         text = text[2:]
         if text != "":
-            lnode = paragraph_to_html_node(text)
-            list_of_pnodes.append(lnode)
+            tnode = inline_to_textnodes(text)
+            lnode = textnodes_to_leafnodes(tnode)
+            list_of_pnodes.extend(lnode)
         continue
+    print(list_of_pnodes)
     return ParentNode("blockquote", list_of_pnodes)
     
 # converts an unordered list to a parentnode
