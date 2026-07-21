@@ -51,8 +51,8 @@ def generate_page(from_path:str, template_path:str, dest_path:str, basepath:str)
     page_tite = extract_title(markdown_file)   
     template_file = template_file.replace("{{ Title }}", page_tite)
     template_file = template_file.replace("{{ Content }}", page_content)
-    template_file = template_file.replace('href="/"', basepath)
-    template_file = template_file.replace('src="/"', basepath)
+    template_file = template_file.replace('href="/"', 'href="{basepath}')
+    template_file = template_file.replace('src="/"', 'src="{basepath}')
     parent_directory = os.path.dirname(dest_path)
     
     if not os.path.exists(dest_path):
