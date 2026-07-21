@@ -1,10 +1,9 @@
-import os, shutil
+import os, shutil, pathlib
 from markdown_blocks import markdown_to_blocks , markdown_to_html_node
 
 
 def static_to_public(source_dir: str, dest_dir: str) -> list[str]:
     visited = []
-    print(source_dir, dest_dir)
     if os.path.exists(dest_dir) and dest_dir.endswith("public"):
         shutil.rmtree(dest_dir)
     
@@ -65,4 +64,17 @@ def generate_page(from_path:str, template_path:str, dest_path:str):
                 file.write(template_file)
     return f"Generating page from {from_path} to {dest_path} using {template_path}"
             
+    
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path) -> list[str]:
+    paths = os.listdir(dir_path_content)
+    
+    for path in paths:
+        dir_p = os.path.join(dir_path_content, path)
+        dest_p = os.path.join(dest_dir_path, path)
+        
+        if os.path.isfile(dir_p):
+            dest = pathlib.Path(dest_p).with_suffix(".html")
+            print(generate_page(dir_p, template_path, dest))
+        else:
+            generate_pages_recursive(dir_p, template_path, dest_p) 
     
