@@ -55,14 +55,11 @@ def generate_page(from_path:str, template_path:str, dest_path:str, basepath:str)
     template_file = template_file.replace('src="/', f'src="{basepath}')
     parent_directory = os.path.dirname(dest_path)
     
-    if not os.path.exists(dest_path):
-        if os.path.exists(parent_directory):
-            with open(dest_path, "x") as file:
-                file.write(template_file)
-        else:
-            os.makedirs(parent_directory)
-            with open(dest_path, "x") as file:
-                file.write(template_file)
+
+    os.makedirs(parent_directory, exist_ok=True)
+
+    with open(dest_path, "w") as file:
+        file.write(template_file)
     return f"Generating page from {from_path} to {dest_path} using {template_path}"
             
     
